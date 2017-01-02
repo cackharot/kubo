@@ -1,0 +1,27 @@
+---
+common:
+  registry_url: registry.walkure.net:5000
+applications:
+  - yimisdb
+app_spec:
+  - name: yimisdb
+    image_name: yimis
+    metadata:
+      layer: database
+      description: mongodb
+    replicas: 1
+    ports: [27017]
+    service_port: 27017
+    service_type: NodePort
+    service_port_name: mongo-tcp
+    volumeMounts:
+        - name: db-storage
+          mountPath: /data/db/
+    volumes:
+      - name: db-storage
+        persistentVolumeClaim:
+            claimName: database-storage-pvc
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi

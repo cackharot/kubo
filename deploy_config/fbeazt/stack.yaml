@@ -1,0 +1,22 @@
+---
+common:
+  registry_url: registry.walkure.net:5000
+applications:
+  - fb-api
+app_spec:
+  - name: fb-api
+    image_name: fbeazt
+    metadata:
+      layer: api
+      lang: python
+    replicas: 1
+    ports: [4000]
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+    properties:
+      FOODBEAZT_CONFIG: /opt/fbeazt/src/foodbeazt/config/dev/foodbeazt.cfg
+      GOOGLE_LOGIN_REDIRECT_URI: 'http://local.kube.cluster.net:31448/oauth2callback'
+      MONGO_HOST: fbeazt-ops-yimisdb-svc.fbeazt-ops-ci
+      MONGO_DBNAME: foodbeaztDb-ci
