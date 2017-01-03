@@ -1,2 +1,6 @@
-Flask==0.10.1
-Flask-PyMongo==0.4.1
+invoke==0.14.0
+PyYAML==3.12
+Jinja2==2.8.1
+pykube==0.14.0
+six==1.10.0
+requests==2.12.4
