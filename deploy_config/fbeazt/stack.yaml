@@ -11,6 +11,7 @@ app_spec:
       lang: python
     replicas: 1
     ports: [4000]
+    service_node_port: 31448
     resources:
       requests:
         cpu: 100m
@@ -18,5 +19,14 @@ app_spec:
     properties:
       FOODBEAZT_CONFIG: /opt/fbeazt/src/foodbeazt/config/dev/foodbeazt.cfg
       GOOGLE_LOGIN_REDIRECT_URI: 'http://local.kube.cluster.net:31448/oauth2callback'
-      MONGO_HOST: fbeazt-ops-yimisdb-svc.fbeazt-ops-ci
+      MONGO_HOST: yimis-db-svc.fbeazt-ops-nonprod
       MONGO_DBNAME: foodbeaztDb-ci
+  - name: fb-web
+    image_name: yuki
+    metadata:
+      layer: web
+      lang: nodejs
+    replicas: 1
+    ports: [80]
+    service_node_port: 32501
+    #command: "nginx -g 'daemon off;'"

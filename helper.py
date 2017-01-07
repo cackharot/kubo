@@ -48,6 +48,15 @@ def data_merge(a, b):
         raise YamlReaderError('TypeError "%s" in key "%s" when merging "%s" into "%s"' % (e, key, b, a))
     return a
 
+def read_ingress(stack, env):
+    stack_path = os.path.join(DCONFIG_PATH,stack,env,'ingress.yaml')
+    if not os.path.exists(stack_path):
+        stack_path = os.path.join(DCONFIG_PATH,stack,'ingress.yaml')
+        if not os.path.exists(stack_path):
+            return {}
+    content = yaml.load(open(stack_path).read())
+    return content
+
 def read_stack(stack, env):
     stack_path = os.path.join(DCONFIG_PATH,stack,'stack.yaml')
     if not os.path.exists(stack_path):
@@ -80,4 +89,11 @@ def read_template(name):
         raise Exception("Template file not found %s" % tpl_path)
     tpl = open(tpl_path).read()
     return tpl
+
+def read_custom_template(stack,filename):
+    tpl_path = os.path.join(DCONFIG_PATH,stack,filename)
+    if not os.path.exists(tpl_path):
+        raise Exception("Template file not found %s" % tpl_path)
+    tpls = yaml.load_all(open(tpl_path).read())
+    return tpls
 

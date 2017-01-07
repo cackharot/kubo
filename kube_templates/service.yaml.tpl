@@ -14,3 +14,6 @@ spec:
     targetPort: {{ports[0]}}
     port: {{service_port | default('80')}}
     protocol: TCP
+    {% if service_node_port -%}
+    nodePort: {{service_node_port}}
+    {% endif -%}

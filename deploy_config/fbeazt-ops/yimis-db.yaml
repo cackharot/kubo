@@ -1,0 +1,68 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: yimis-db-svc
+  labels:
+    name: yimis-db-svc
+spec:
+  selector:
+    app: yimis-db
+  type: NodePort
+  ports:
+  - name: mongo-tcp
+    port: 27017
+    protocol: TCP
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: yimis-db
+  labels:
+    name: yimis-db
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: yimis-db
+        product: mongodb
+        layer: db
+    spec:
+      containers:
+      - name: yimisdb
+        image: "registry.walkure.net:5000/yimis:latest"
+        ports:
+          - containerPort: 27017
+        volumeMounts:
+          - name: db-storage
+            mountPath: /data/db/
+      volumes:
+      - name: db-storage
+        persistentVolumeClaim:
+            claimName: yimis-db-pvc
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: yimis-db-pv
+spec:
+  capacity:
+    storage: 500Mi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /fbeazt_db_storage
+    server: 172.16.0.253
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: yimis-db-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+

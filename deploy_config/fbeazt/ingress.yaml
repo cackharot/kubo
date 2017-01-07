@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: fbeazt-ingress
+spec:
+  rules:
+  - host: fbeazt.walkure.net
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: fbeazt-fb-web-svc
+          servicePort: 80
+
+      - path: /api
+        backend:
+          serviceName: fbeazt-fb-api-svc
+          servicePort: 80

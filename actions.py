@@ -4,6 +4,7 @@ import yaml
 import pykube
 import logging
 from invoke import task
+import inspect
 
 import helper
 
@@ -14,6 +15,27 @@ log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
 console = logging.StreamHandler()
 log.addHandler(console)
+
+@task
+def deploy_ingress(ctx,stack,env):
+    """Deploy ingress rules"""
+    log.info('Updating Ingress rules')
+    rules = helper.read_ingress(stack,env)
+    ns = "%s-%s" % (stack,env)
+    rules['metadata']['namespace'] = ns
+    ing = pykube.Ingress(kapi,rules)
+    if ing.exists():
+        ing.update()
+    else:
+        ing.create()
+    pass
+
+@task
+def post_deploy(ctx,stack,env):
+    """Do some post deploy task like waiting util env is ready and do a health check, collect report, etc'"""
+    log.info('Do some post deploy task like waiting util env is ready and do a health check, collect report, etc')
+    pass
+
 
 @task
 def deploy(ctx,stack,env):
@@ -37,6 +59,11 @@ def deploy(ctx,stack,env):
         app_name = data['name']
         service_name = "%s-%s-svc" % (stack,app_name)
         rs_name = "%s-%s" % (stack,app_name)
+        if 'template' in data and data['template'] is not None:
+            template_file = data['template']
+            tpls = helper.read_custom_template(stack,template_file)
+            apply_custom_template(namespace,tpls)
+            continue
         data['stack'] = stack
         data['env'] = env
         data['sys_env'] = content['sys_env']
@@ -88,3 +115,19 @@ def create_deployment(namespace,name,data):
         log.info("Updating deployment '%s'" % (name))
         app_deploy.update()
 
+def apply_custom_template(namespace, templates):
+    pykube_cls = inspect.getmembers(pykube.objects,inspect.isclass)
+    for template in templates:
+        kind = template['kind']
+        name = template['metadata']['name']
+        kcls = [obj for kname,obj in pykube_cls if kname == kind][0]
+        kobj = kcls(kapi,template)
+        if issubclass(kobj.__class__,pykube.objects.NamespacedAPIObject):
+            # log.info("%s is NamespacedAPIObject" % kind)
+            template['metadata']['namespace'] = namespace
+        if not kobj.exists():
+            log.info("Creating %s %s" % (kind, name))
+            kobj.create()
+        else:
+            log.info("Updating %s %s" % (kind,name))
+            kobj.update()
