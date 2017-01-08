@@ -7,7 +7,8 @@ import pprint
 DCONFIG_PATH = os.path.join('./deploy_config')
 TEMPLATE_PATH = os.path.join('./kube_templates')
 log = logging.getLogger(__name__)
-log.setLevel(logging.DEBUG)
+# log.setLevel(logging.DEBUG)
+log.setLevel(logging.INFO)
 log.addHandler(logging.StreamHandler())
 
 class YamlReaderError(Exception):
