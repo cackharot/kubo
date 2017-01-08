@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: lilly-ingress
+spec:
+  rules:
+  - host: lilly.walkure.net
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: lilly-lilly-api-svc
+          servicePort: 80
