@@ -1,6 +1,8 @@
 ---
 common:
     registry_url: registry.walkure.net:5000
+features:
+    bg: true
 applications:
     - api
 app_spec:

@@ -78,7 +78,7 @@ def delete_pods_on_side(namespace,deploy_side):
         dep.delete()
 
 @task
-def deploy(ctx,stack,env,bg=True):
+def deploy(ctx,stack,env):
     """Deploy the given stack to the specified cluster environment"""
     log.info("Deploying %s on environment %s" % (stack,env))
     content = helper.read_stack(stack, env)
@@ -88,6 +88,8 @@ def deploy(ctx,stack,env,bg=True):
         log.info('No applications found!')
         return
 
+    features = content.get('features',{})
+    bg = features.get('bg', False)
     deploy_side = get_deploy_side(namespace,bg)
     if bg: delete_pods_on_side(namespace,deploy_side)
     common_props = content.get('common', {})
