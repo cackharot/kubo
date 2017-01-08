@@ -45,28 +45,28 @@ spec:
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: fbeazt-yimis-db-pv
+  name: lilly-yimis-db-pv
   labels:
-    stack: fbeazt
+    stack: lilly
 spec:
   capacity:
     storage: 500Mi
   accessModes:
     - ReadWriteOnce
   nfs:
-    path: /fbeazt_db_storage
+    path: /lilly_db_storage
     server: 172.16.0.253
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: fbeazt-yimis-db-pvc
+  name: lilly-yimis-db-pvc
 spec:
   accessModes:
     - ReadWriteOnce
   selector:
     matchLabels:
-      stack: fbeazt
+      stack: lilly
   resources:
     requests:
       storage: 500Mi

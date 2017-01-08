@@ -1,0 +1,9 @@
+---
+common:
+  registry_url: registry.walkure.net:5000
+applications:
+  - yimisdb
+app_spec:
+  - name: yimisdb
+    template: yimis-db.yaml
+
