@@ -1,16 +1,22 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{stack}}-{{name}}
+  name: {{stack}}-{{name}}{{'-'+deploy_side if bg}}
   namespace: {{stack}}-{{env}}
   labels:
-    name: {{stack}}-{{name}}
+    name: {{stack}}-{{name}}{{'-'+deploy_side if bg}}
+{% if bg %}
+    side: {{deploy_side}}
+{% endif %}
 spec:
   replicas: {{replicas}}
   template:
     metadata:
       labels:
         app: {{stack}}-{{name}}
+    {% if bg %}
+    side: {{deploy_side}}
+    {% endif -%}
     {% for k,v in metadata.items() %}
     {{k}}: {{v}}
     {% endfor -%}

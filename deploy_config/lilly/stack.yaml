@@ -2,13 +2,13 @@
 common:
     registry_url: registry.walkure.net:5000
 applications:
-    - lilly-api
+    - api
 app_spec:
-    - name: lilly-api
+    - name: api
       image_name: lilly
       metadata:
-            layer: api
-            lang: python
+          layer: api
+          lang: python
       replicas: 2
       ports: [5000]
       resources:

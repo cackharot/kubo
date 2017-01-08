@@ -54,8 +54,7 @@ def read_ingress(stack, env):
         stack_path = os.path.join(DCONFIG_PATH,stack,'ingress.yaml')
         if not os.path.exists(stack_path):
             return {}
-    content = yaml.load(open(stack_path).read())
-    return content
+    return open(stack_path).read()
 
 def read_stack(stack, env):
     stack_path = os.path.join(DCONFIG_PATH,stack,'stack.yaml')

@@ -9,5 +9,12 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: lilly-lilly-api-svc
+          serviceName: {{active_services.get('api').name}}
+          servicePort: 80
+  - host: inactive.lilly.walkure.net
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{inactive_services.get('api').name}}
           servicePort: 80

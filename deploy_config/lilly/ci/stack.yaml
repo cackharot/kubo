@@ -1,5 +1,5 @@
 app_spec:
-    - name: lilly-api
+    - name: api
       properties:
         MESSAGE: Hello from ci environment!
         MONGO_HOST: yimis-db-svc.lilly-ops-nonprod
