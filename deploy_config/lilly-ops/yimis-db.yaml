@@ -40,7 +40,7 @@ spec:
       volumes:
       - name: db-storage
         persistentVolumeClaim:
-            claimName: yimis-db-pvc
+            claimName: lilly-yimis-db-pvc
 ---
 kind: PersistentVolume
 apiVersion: v1
